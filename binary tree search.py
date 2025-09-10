@@ -1,3 +1,4 @@
+
 class TreeNode():
     def __init__(self,key):
         self.node_data=key
@@ -30,6 +31,32 @@ def search(root,k):
         return search(root.right,k)
     else:
         return False
+def find_min(root):
+    current=root
+    while current.left is not None:
+        current=current.left
+    return current
+def delete(root,key):
+    if root is None:
+        return root
+    if key<root.node_data:
+        root.left=delete(root.left,key)
+    elif key>root.node_data:
+        root.right=delete(root.right,key)
+    #node with only one child or no child
+    else:
+        if root.left is None:
+            temp=root.right
+            root=None
+            return temp
+        elif root.right is None:
+            temp=root.right
+            root=None
+            return temp
+        temp=find_min(root.right)
+        root.node_data=temp.node_data
+        root.right=delete(root.right,temp.node_data)
+    return root
 root=None
 root=insert(root,63)
 root=insert(root,78)
@@ -39,9 +66,12 @@ root=insert(root,13)
 root=insert(root,90)
 root=insert(root,67)
 root=insert(root,35)
+find_min(root)
+root=delete(root,90)
 in_order(root)
 print(list[0])
 print(list[-1])
+print(find_min(root).node_data)
 found=search(root,90)
 if found ==True:
     print(" your number has been found!")
